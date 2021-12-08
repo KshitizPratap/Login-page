@@ -10,8 +10,6 @@ const backdrop = (props) => {
         </div>
     )
 
-    console.log("[Backdrop Rendering]")
-
     if(props.show === false){
         Backdrop = null;
     }
