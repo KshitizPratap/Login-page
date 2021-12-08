@@ -2,7 +2,7 @@
     background-color: rgb(173, 222, 245);
     border-radius: 30px;
     transition: all 0.5s ease-out;
-    padding: 2rem 9rem;
+    padding: 1.5rem 9rem 2rem 9rem;
 }
 
 .InputContainer p{

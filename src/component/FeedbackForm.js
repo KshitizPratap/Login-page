@@ -4,6 +4,7 @@ import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndP
 import { auth } from '../firebase-config'
 import Modal from './Modal'
 import LandingPage from './LandingPage'
+import Backdrop from './Backdrop'
 
 function FeedbackForm(){
 
@@ -13,6 +14,7 @@ function FeedbackForm(){
     const [registerPassword, setRegisterPassword] = useState("")
     const [loginEmail, setLoginEmail] = useState("")
     const [loginPassword, setLoginPassword] = useState("")
+    const [errorMessage, SetErrorMessage] = useState("");
 
     onAuthStateChanged(auth, (currentUser) => {
         setUser(currentUser)
@@ -28,9 +30,8 @@ function FeedbackForm(){
             console.log(user)
         }
         catch(error){
-            <Modal>
-                {error.message}
-            </Modal>
+            SetErrorMessage(error.message)
+            console.log(error.message)
         }
     }
 
@@ -44,14 +45,19 @@ function FeedbackForm(){
             console.log(user)
         }
         catch(error){
-            <Modal>
-                {error.message}
-            </Modal>
+            // console.log(error.message)
         }
+    }
+
+    const errorDeletehandler = () => {
+        SetErrorMessage("");
     }
 
     let Inputs = (
         <>
+            <Backdrop 
+                show = {errorMessage !== ""}
+                errorDeletehandler = {errorDeletehandler}/>
             <p>Name:</p>
             <input type='text' placeholder = " Full Name"/>                
             <p>Phone Number:</p>
@@ -84,6 +90,9 @@ function FeedbackForm(){
     if(buttonState){
         Inputs = (
             <>
+                <Backdrop 
+                    show = {errorMessage !== ""}
+                    errorDeletehandler = {errorDeletehandler}/>
                 <p>Email Address:</p>
                 <input 
                     type='email'
@@ -110,7 +119,11 @@ function FeedbackForm(){
 
     let MainContent = null;
     
-    if(!user){
+    if(user){
+        MainContent = <LandingPage/> 
+    }
+
+    else{
         MainContent = (
             <div className = {classes.FeedbackForm}>
                 <div className = {classes.InputContainer}>
@@ -120,11 +133,16 @@ function FeedbackForm(){
         )
     }
 
-    if(user){
-        MainContent = <LandingPage/>
-    }
-
-    return MainContent
+    return (
+        <div>
+            <Modal show = {errorMessage !== ""} error = {errorMessage}>
+                {errorMessage}
+            </Modal>
+            {MainContent}
+        </div>
+    )
+    
+    
 }
 
 export default FeedbackForm;
