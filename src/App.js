@@ -1,5 +1,5 @@
 import classes from './App.module.css';
-import Form from './FeedbackForm'
+import Form from './component/FeedbackForm'
 
 function App() {
   return (
